@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Telugu Nighantuvu — Telugu–Telugu Dictionary</title>
+<meta name="description" content="Offline Telugu–Telugu dictionary with editing, favourites, themes, backup & restore." />
+<meta name="theme-color" content="#6D28D9" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32" />
+<link rel="icon" href="icons/favicon-16.png" sizes="16x16" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="నిఘంటువు" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <img class="brand-logo" src="icons/logo.png" alt="" />
+  <div class="brand-text">
+    <h1>Telugu Nighantuvu</h1>
+    <p>తెలుగు – తెలుగు నిఘంటువు</p>
+  </div>
+  <button id="installBtn" class="btn install hidden" title="Install app">Install</button>
+</header>
+
+<main id="main">
+
+  <!-- SEARCH VIEW -->
+  <section id="view-search" class="view">
+    <div class="searchbar">
+      <svg class="search-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4a6 6 0 1 0 3.9 10.6l4.3 4.3 1.4-1.4-4.3-4.3A6 6 0 0 0 10 4zm0 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8z"/></svg>
+      <input id="q" type="search" inputmode="search" autocomplete="off" autocapitalize="off"
+             placeholder="Search Telugu / తెలుగు / English…" />
+      <button id="clearQ" class="clear hidden" title="Clear">✕</button>
+    </div>
+    <div id="status" class="status">Loading dictionary…</div>
+    <div id="results" class="results"></div>
+  </section>
+
+  <!-- FAVOURITES VIEW -->
+  <section id="view-fav" class="view hidden">
+    <h2 class="view-title">Favourites <span id="favCount" class="pill"></span></h2>
+    <div id="favList" class="results"></div>
+  </section>
+
+  <!-- SETTINGS VIEW -->
+  <section id="view-settings" class="view hidden">
+    <h2 class="view-title">Settings</h2>
+
+    <div class="card">
+      <h3>Appearance</h3>
+      <div class="field">
+        <label>Theme</label>
+        <div class="seg" id="themeSeg">
+          <button data-theme="light">Light</button>
+          <button data-theme="dark">Dark</button>
+          <button data-theme="system">System</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Accent colour</label>
+        <div class="swatches" id="swatches"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Backup &amp; Restore</h3>
+      <p class="muted">Back up your own words, edits, favourites and settings to a file you choose. Restore from a backup file.</p>
+      <div class="row">
+        <button id="exportBtn" class="btn primary">Export backup…</button>
+        <button id="importBtn" class="btn">Restore…</button>
+      </div>
+      <input id="importFile" type="file" accept="application/json,.json" class="hidden" />
+      <p id="backupMsg" class="muted small"></p>
+    </div>
+
+    <div class="card">
+      <h3>Dictionary data</h3>
+      <p class="muted small" id="statsLine">—</p>
+      <button id="resetUserBtn" class="btn danger">Delete my words &amp; edits</button>
+    </div>
+
+    <div class="card">
+      <h3>Install</h3>
+      <p class="muted small">Add this app to your home screen for offline use.</p>
+      <button id="installBtn2" class="btn primary">Install app</button>
+      <p class="muted small" id="installHint"></p>
+    </div>
+
+    <p class="muted small center">Telugu–Telugu content adapted from Wiktionary (te–te) and open Telugu word lists.</p>
+  </section>
+
+  <!-- ENTRY DETAIL VIEW -->
+  <section id="view-entry" class="view hidden">
+    <button class="back" id="backFromEntry">‹ Back</button>
+    <div id="entryBody"></div>
+  </section>
+
+  <!-- EDIT VIEW -->
+  <section id="view-edit" class="view hidden">
+    <button class="back" id="backFromEdit">‹ Cancel</button>
+    <h2 class="view-title" id="editTitle">Add word</h2>
+    <form id="editForm" class="card">
+      <div class="field"><label>Word (Telugu) *</label><input id="fWord" required /></div>
+      <div class="field"><label>Transliteration</label><input id="fTranslit" /></div>
+      <div class="field"><label>Part of speech</label><input id="fPos" placeholder="నామవాచకము / క్రియ …" /></div>
+      <div class="field"><label>Meaning in Telugu (అర్థం)</label><textarea id="fMeaning" rows="4"></textarea></div>
+      <div class="field"><label>Synonyms / related words</label><input id="fSyn" /></div>
+      <div class="field"><label>English hint (optional)</label><input id="fEng" /></div>
+      <div class="row end">
+        <button type="button" id="editDelete" class="btn danger hidden">Delete</button>
+        <button type="submit" class="btn primary">Save</button>
+      </div>
+    </form>
+  </section>
+
+</main>
+
+<!-- BOTTOM NAV -->
+<nav class="tabbar">
+  <button data-view="search" class="tab active">
+    <svg viewBox="0 0 24 24"><path d="M10 4a6 6 0 1 0 3.9 10.6l4.3 4.3 1.4-1.4-4.3-4.3A6 6 0 0 0 10 4zm0 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8z"/></svg>
+    <span>Search</span>
+  </button>
+  <button data-view="fav" class="tab">
+    <svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.5 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.8 1-6.1L3.2 9.4l6.1-.9z"/></svg>
+    <span>Favourites</span>
+  </button>
+  <button data-view="settings" class="tab">
+    <svg viewBox="0 0 24 24"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm8.9 4a7 7 0 0 0-.1-1.1l2-1.6-2-3.4-2.4 1a7 7 0 0 0-1.9-1.1l-.4-2.5h-4l-.4 2.5a7 7 0 0 0-1.9 1.1l-2.4-1-2 3.4 2 1.6a7 7 0 0 0 0 2.2l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 1.9 1.1l.4 2.5h4l.4-2.5a7 7 0 0 0 1.9-1.1l2.4 1 2-3.4-2-1.6c.06-.36.1-.73.1-1.1z"/></svg>
+    <span>Settings</span>
+  </button>
+</nav>
+
+<button id="addFab" class="fab" title="Add a new word">+</button>
+
+<!-- RESTORE CHOICE MODAL -->
+<div id="modal" class="modal hidden">
+  <div class="modal-box">
+    <h3>Restore backup</h3>
+    <p class="muted small">How should the backup be applied?</p>
+    <div class="row end">
+      <button id="mCancel" class="btn">Cancel</button>
+      <button id="mMerge" class="btn">Merge</button>
+      <button id="mReplace" class="btn primary">Replace</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
